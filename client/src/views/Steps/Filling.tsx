@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import LocalPizzaIcon from '@material-ui/icons/LocalPizza';
 import PizzaLoad from 'components/PizzaLoad/PizzaLoad';
 import useRouter from 'utils/useRouter';
+import DialogComponent from 'components/DialogComponent';
 // import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -39,9 +40,10 @@ const useStyles = makeStyles((theme) => ({
 
 function FillingList() {
     const classes = useStyles();
-    const [pastas, setPastas] = useState<{ data: [Item], recomedation: Item }>()
+    const [pastas, setPastas] = useState<{ data: [Item], recomedation: Item, points: number }>()
     const [loading, setLoading] = useState(true);
     const [value, setValue] = useState()
+    const [open, setOpen] = React.useState<boolean>(false);
     const route = useRouter()
     // const search = useLocation().search;
     // const pasta = new URLSearchParams(search).get('pasta');
@@ -62,6 +64,13 @@ function FillingList() {
         route.history.push(`/buy/size?filling=${value}`)
     }, [value])
 
+    const handleClickOpen = React.useCallback(() => {
+        setOpen(true);
+    }, [])
+
+    const handleClose = React.useCallback(() => {
+        setOpen(false);
+    }, [])
 
     return (
         <div>
@@ -70,7 +79,7 @@ function FillingList() {
             >
                 {loading && <PizzaLoad />}
                 <section className="box-bola">
-                    {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => <span key={i} className={`custom-animation animation${i}`}>
+                    {[1, 2, 3, 5, 6, 7, 8].map((i) => <span key={i} className={`custom-animation animation${i}`}>
                         🍕
                     </span>)}
 
@@ -83,14 +92,13 @@ function FillingList() {
                     </Grid>
 
                     <Grid className={classes.content} container justify="center" alignItems="center">
-
                         {
                             pastas?.data && pastas?.data.map((item) => (
                                 <Grid className={classes.center} key={item.id} xs={2} item>
-                                    <label className={`radio-container ${pastas?.recomedation.id === item.id ? 'recomedation-label': ''}`} key={item.id}>
+                                    <label className={`radio-container ${pastas?.recomedation.id === item.id ? 'recomedation-label' : 'price'}`} key={item.id}>
                                         <input name="method" type="radio" className="radio-hidden" value={item.id} onClick={handleSize} />
                                         <img alt="" src={'http://localhost:3333/' + item.image} className={`radio-image ${pastas?.recomedation.id === item.id ? 'recomedation' : ''}`} />
-                                        <br/><span>{pastas?.recomedation.id === item.id ? 'Pizza do dia' : ''}</span>
+                                        <br /><span>{pastas?.recomedation.id === item.id ? `Pizza do dia por R$${pastas?.recomedation.price}` : 'R$' + item.price}</span>
                                     </label>
                                 </Grid>
                             ))
@@ -100,7 +108,7 @@ function FillingList() {
                         <Grid className={classes.margin} xs={2} item>
                             <ButtonCustom
                                 disabled={!value}
-                                onClick={nextToPage}
+                                onClick={pastas?.recomedation.id === value ? handleClickOpen : nextToPage}
                                 size="large"
                                 variant="contained"
                                 color="default"
@@ -111,6 +119,12 @@ function FillingList() {
                         </Grid>
                     </Grid>
                 </section>
+                <DialogComponent
+                    open={open}
+                    onClose={handleClose}
+                    callback={nextToPage}
+                    title={`Você receberá ${pastas?.points} pontos de benefícios para proxima compra, após finalizar a compra`}
+                />
             </Page>
         </div>
     )

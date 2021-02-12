@@ -5,12 +5,19 @@ import { RouteConfig } from 'react-router-config';
 import { Redirect } from 'react-router-dom';
 
 const RediHome: React.FC = () => <Redirect to="/buy/filling" />
+const RediError: React.FC = () => <Redirect to="/errors/error-404" />
+
 
 const routes: RouteConfig[] = [
     {
         path: '/',
         exact: true,
         component: RediHome
+    },
+    {
+        path: '/errors/error-404',
+        exact: true,
+        component: lazy(() => import('./views/Error/Error'))
     },
     {
         path: '*',
@@ -31,6 +38,9 @@ const routes: RouteConfig[] = [
                 exact: true,
                 component: lazy(() => import('./views/Steps/Filling'))
             },
+            {
+                component: RediError
+            }
         ]
     }
 ];

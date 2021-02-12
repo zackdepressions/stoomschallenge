@@ -10,7 +10,7 @@ export class GetListFillingsController {
     async handle(request: Request, response: Response): Promise<Response> {
         try {
             var data: Filling[] = await this.GetListFillingsCase.queryAll()
-            return response.json({ data: data, recomedation: data?.[data.length - 1] });
+            return response.json({ data: data, recomedation: data?.[data.length - 1], points: 10 });
         } catch (err) {
             return response.status(400).json({
                 message: err.message || 'Unexpected error.'

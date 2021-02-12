@@ -1,10 +1,9 @@
 
-import React from 'react';
-
 interface Item {
     id: number,
     name: string,
-    image: string
+    image: string,
+    price: number
 }
 
 export type { Item }

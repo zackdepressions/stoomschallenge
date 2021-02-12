@@ -41,8 +41,8 @@ function SizeList() {
     const [value, setValue] = useState()
     const route = useRouter()
     const search = useLocation().search;
-    const pasta = new URLSearchParams(search).get('pasta');
-    console.log(pasta)
+    const filling = new URLSearchParams(search).get('filling');
+    
     useEffect(() => {
         fetch("http://localhost:3333/sizes")
             .then((res) => res.json())
@@ -57,7 +57,7 @@ function SizeList() {
     }
 
     const nextToPage = React.useCallback(() => {
-        route.history.push(`/buy/pasta?filling=${pasta}&size=${value}`)
+        route.history.push(`/buy/pasta?filling=${filling}&size=${value}`)
     }, [value])
 
     const backToPage = React.useCallback(() => {
@@ -72,7 +72,7 @@ function SizeList() {
             >
                 {loading && <PizzaLoad />}
                 <section className="box-bola">
-                    {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => <span key={i} className={`custom-animation animation${i}`}>
+                    {[1, 2, 3, 5, 6, 7, 8].map((i) => <span key={i} className={`custom-animation animation${i}`}>
                         🍕
                     </span>)}
 

@@ -10,19 +10,19 @@ export class PostgresFillingRepository implements IFillingsRepository {
       {
         id: '1',
         name: 'Frango',
-        price: 10,
+        price: 25,
         image: 'public/assets/frango.png'
       },
       {
         id: '2',
         name: 'Portuguesa',
-        price: 10,
+        price: 25,
         image: 'public/assets/portuguesa.png'
       },
       {
         id: '3',
         name: 'Calabresa',
-        price: 10,
+        price: 20,
         image: 'public/assets/calabresa.png'
       },
     ]
