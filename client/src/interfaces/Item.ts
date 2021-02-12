@@ -1,10 +1,10 @@
 
 import React from 'react';
 
-interface Pasta {
+interface Item {
     id: number,
     name: string,
     image: string
 }
 
-export type { Pasta }
+export type { Item }

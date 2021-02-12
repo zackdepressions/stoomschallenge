@@ -4,7 +4,7 @@ import { lazy } from 'react';
 import { RouteConfig } from 'react-router-config';
 import { Redirect } from 'react-router-dom';
 
-const RediHome: React.FC = () => <Redirect to="/buy/pasta" />
+const RediHome: React.FC = () => <Redirect to="/buy/filling" />
 
 const routes: RouteConfig[] = [
     {
@@ -19,12 +19,17 @@ const routes: RouteConfig[] = [
             {
                 path: '/buy/pasta',
                 exact: true,
-                component: lazy(() => import('./views/Steps'))
+                component: lazy(() => import('./views/Steps/Pasta'))
             },
             {
                 path: '/buy/size',
                 exact: true,
-                component: lazy(() => import('./views/Steps'))
+                component: lazy(() => import('./views/Steps/Size'))
+            },
+            {
+                path: '/buy/filling',
+                exact: true,
+                component: lazy(() => import('./views/Steps/Filling'))
             },
         ]
     }

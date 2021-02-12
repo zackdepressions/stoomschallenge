@@ -1,12 +1,12 @@
 import { Grid, Typography } from '@material-ui/core'
-import { Page, Button as ButtonCustom, ButtonDefault } from 'components'
+import { Page, Button as ButtonCustom } from 'components'
 import { Item } from 'interfaces'
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from "@material-ui/core/styles";
 import LocalPizzaIcon from '@material-ui/icons/LocalPizza';
 import PizzaLoad from 'components/PizzaLoad/PizzaLoad';
 import useRouter from 'utils/useRouter';
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -30,21 +30,23 @@ const useStyles = makeStyles((theme) => ({
     },
     contentTitle: {
         marginTop: theme.spacing(15)
+    },
+    center: {
+        textAlign: 'center'
     }
 }));
 
 
-function SizeList() {
+function FillingList() {
     const classes = useStyles();
-    const [pastas, setPastas] = useState<[Item]>()
+    const [pastas, setPastas] = useState<{ data: [Item], recomedation: Item }>()
     const [loading, setLoading] = useState(true);
     const [value, setValue] = useState()
     const route = useRouter()
-    const search = useLocation().search;
-    const pasta = new URLSearchParams(search).get('pasta');
-    console.log(pasta)
+    // const search = useLocation().search;
+    // const pasta = new URLSearchParams(search).get('pasta');
     useEffect(() => {
-        fetch("http://localhost:3333/sizes")
+        fetch("http://localhost:3333/fillings")
             .then((res) => res.json())
             .then((data) => {
                 setLoading(false)
@@ -57,11 +59,7 @@ function SizeList() {
     }
 
     const nextToPage = React.useCallback(() => {
-        route.history.push(`/buy/pasta?filling=${pasta}&size=${value}`)
-    }, [value])
-
-    const backToPage = React.useCallback(() => {
-        route.history.push("/buy/filling")
+        route.history.push(`/buy/size?filling=${value}`)
     }, [value])
 
 
@@ -79,7 +77,7 @@ function SizeList() {
                     <Grid className={classes.contentTitle} container >
                         <Grid xs={12} item>
                             <Typography className={classes.title}>
-                                Escolha o tamanho
+                                Escolha o recheio
                         </Typography>
                         </Grid>
                     </Grid>
@@ -87,28 +85,18 @@ function SizeList() {
                     <Grid className={classes.content} container justify="center" alignItems="center">
 
                         {
-                            pastas && pastas.map((item) => (
-                                <Grid key={item.id} xs={2} item>
-                                    <label className="radio-container" key={item.id}>
+                            pastas?.data && pastas?.data.map((item) => (
+                                <Grid className={classes.center} key={item.id} xs={2} item>
+                                    <label className={`radio-container ${pastas?.recomedation.id === item.id ? 'recomedation-label': ''}`} key={item.id}>
                                         <input name="method" type="radio" className="radio-hidden" value={item.id} onClick={handleSize} />
-                                        <img alt="" src={'http://localhost:3333/' + item.image} className="radio-image" />
+                                        <img alt="" src={'http://localhost:3333/' + item.image} className={`radio-image ${pastas?.recomedation.id === item.id ? 'recomedation' : ''}`} />
+                                        <br/><span>{pastas?.recomedation.id === item.id ? 'Pizza do dia' : ''}</span>
                                     </label>
                                 </Grid>
                             ))
                         }
                     </Grid>
                     <Grid container justify="center">
-                        <Grid className={classes.margin} xs={2} item>
-                            <ButtonDefault
-                                onClick={backToPage}
-                                size="large"
-                                variant="contained"
-                                color="primary"
-                                className={classes.margin}
-                                startIcon={<LocalPizzaIcon />}>
-                                Voltar
-      </ButtonDefault>
-                        </Grid>
                         <Grid className={classes.margin} xs={2} item>
                             <ButtonCustom
                                 disabled={!value}
@@ -128,4 +116,4 @@ function SizeList() {
     )
 }
 
-export default SizeList
+export default FillingList

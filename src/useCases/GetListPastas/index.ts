@@ -2,14 +2,14 @@ import { PostgresPastaRepository } from "../../repositories/implementations/Past
 import { GetListPastasCase } from "./GetListPastasCase";
 import { GetListPastasController } from "./GetListPastasController";
 
-const postgresUsersRepository = new PostgresPastaRepository()
+const postgresPastaRepository = new PostgresPastaRepository()
 
 const getListUseCase = new GetListPastasCase(
-  postgresUsersRepository
+  postgresPastaRepository
 )
 
-const getListController = new GetListPastasController(
+const getListPastaController = new GetListPastasController(
   getListUseCase
 )
 
-export { getListUseCase, getListController }
+export { getListUseCase, getListPastaController }

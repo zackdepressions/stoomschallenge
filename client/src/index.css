@@ -402,3 +402,13 @@ position: relative;
    .MuiDialogContent-root {
     overflow: hidden !important;
    }
+
+   .recomedation{
+     border: 2.7px solid #EA1D2C;
+   }
+
+   .recomedation-label {
+    color: #EA1D2C;
+    font-size: 1.4em;
+    font-weight: bold;
+   }

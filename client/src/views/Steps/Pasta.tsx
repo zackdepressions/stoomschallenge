@@ -1,6 +1,6 @@
 import { Grid, Typography } from '@material-ui/core'
 import { Page, Button as ButtonCustom } from 'components'
-import { Pasta } from 'interfaces'
+import { Item } from 'interfaces'
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from "@material-ui/core/styles";
 import LocalPizzaIcon from '@material-ui/icons/LocalPizza';
@@ -35,10 +35,11 @@ const useStyles = makeStyles((theme) => ({
 
 function PastaList() {
     const classes = useStyles();
-    const [pastas, setPastas] = useState<[Pasta]>()
+    const [pastas, setPastas] = useState<[Item]>()
     const [loading, setLoading] = useState(true);
     const route = useRouter()
-    
+    const [value, setValue] = useState()
+
     useEffect(() => {
         fetch("http://localhost:3333/pastas")
             .then((res) => res.json())
@@ -50,11 +51,12 @@ function PastaList() {
 
     const handlePasta = (e: any) => {
         console.log(e.target.value)
+        setValue(e.target.value);
     }
 
     const nextToPage = React.useCallback(() => {
-        route.history.push("/buy/size")
-    },[])
+        route.history.push("/buy/size?pasta=" + value)
+    }, [value])
     return (
         <div>
             <Page
@@ -78,24 +80,23 @@ function PastaList() {
 
                         {
                             pastas && pastas.map((item) => (
-                                <Grid key={item.id} xs={2} item>
-                                    <button onClick={handlePasta}>
-                                        <label className="radio-container" key={item.id}>
-                                            <input name="method" type="radio" className="radio-hidden" value={item.id} />
-                                            <img alt="" src={'http://localhost:3333/' + item.image} className="radio-image" />
-                                        </label>
-                                    </button>
+                                <Grid key={item.id} xs={2} item >
+                                    <label className="radio-container" key={item.id}>
+                                        <input name="method" type="radio" className="radio-hidden" value={item.id} onClick={handlePasta} />
+                                        <img alt="" src={'http://localhost:3333/' + item.image} className="radio-image" />
+                                    </label>
                                 </Grid>
                             ))
                         }
                         <Grid className={classes.margin} xs={12} item>
-                            <ButtonCustom 
-                            onClick={nextToPage}
-                            size="large" 
-                            variant="contained" 
-                            color="primary" 
-                            className={classes.margin} 
-                            startIcon={<LocalPizzaIcon />}>
+                            <ButtonCustom
+                                disabled={!value}
+                                onClick={nextToPage}
+                                size="large"
+                                variant="contained"
+                                color="primary"
+                                className={classes.margin}
+                                startIcon={<LocalPizzaIcon />}>
                                 Proximo
       </ButtonCustom>
                         </Grid>

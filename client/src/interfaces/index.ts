@@ -1,1 +1,1 @@
-export type { Pasta } from './Pasta';
+export type { Item } from './Item';
